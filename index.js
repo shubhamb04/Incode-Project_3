@@ -17,10 +17,15 @@ const PORT = process.env.PORT || 3000;
 //create your endpoints/route handlers
 app.get("/", (req, res) => {
     //sending a response
-    res.send("<h1>Hello World......!</h1>")
+    res.send('Welcome to our schedule website')
 
     //sending a file in response
     // res.sendFile(path.join(__DirName, 'public', 'index.html'))
+})
+
+//gets all users
+app.get('/users', (req, res) => {
+    res.json(data.users)
 })
 
 
