@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const data = require("../../data");
+const bcrypt = require("bcrypt")
 
 //gets all users
 router.get("/users", (req, res) => {
@@ -58,21 +59,17 @@ router.get("/schedules", (req, res) => {
 });
 
 //Add new user
-router.post("/users", (req, res) => {
-    const newUser = {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        email: req.body.email,
-        password: req.body.password
-    }
-
-    if (!newUser.firstname || !newUser.lastname || !newUser.email || !newUser.password) {
+router.post("/users", async (req, res) => {
+   
+    const { firstname, lastname, email, password } = req.body;
+    const hash = await bcrypt.hash(password, 10);
+    if(!firstname || !lastname || !email || !password){
         return res.status(400).json({msg: "Please fill all the details"})
     }
 
-    data.users.push(newUser);
+    data.users.push({firstname: firstname, lastname: lastname, email: email, password: hash});
 
-    res.json(data.users)
+    res.json(data.users[data.users.length-1])
 })
 
 //Add new schedule
