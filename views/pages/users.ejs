@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <%- include("../partials/header") %>
+    <main>
+        <div class="container">
+            <table class="table">
+                <tr>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Email ID</th>
+                    <th scope="col">Password</th>
+                    <th>Schedules</th>
+                </tr>
+                <% allUsers.forEach((user, index)=> { %>
+                    <tr>    
+                        <td>
+                            <a href="/users/<%= index %> "><%= user.firstname %></a>
+                        </td>
+                        <td>
+                            <%= user.lastname %>
+                        </td>
+                        <td>
+                            <%= user.email %>
+                        </td>
+                        <td>
+                            <%= user.password %>
+                        </td>
+                        <td>
+                            <a href="/users/<%= index %>/Schedules ">View Schedules</a>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

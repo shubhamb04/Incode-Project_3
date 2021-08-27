@@ -1,0 +1,27 @@
+<%- include("../partials/header") %>
+<table class="table">
+    <tr>
+        <th scope="col">User ID</th>
+        <th scope="col">Day</th>
+        <th scope="col">Start Time</th>
+        <th scope="col">End Time</th>
+    </tr>
+    <% allSchedules.forEach(schedule=> { %>
+        <tr>
+            <td>
+                <a href="/users/<%= schedule.user_id %> ">
+                    <%= schedule.user_id %>
+                </a>
+            </td>
+            <td>
+                <%= schedule.day %>
+            </td>
+            <td>
+                <%= schedule.start_at %>
+            </td>
+            <td>
+                <%= schedule.end_at %>
+            </td>
+        </tr>
+        <% }) %>
+</table>

@@ -2,15 +2,22 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
+// const bootstrap = require('bootstrap')
 
 //Body Parser Middleware
 app.use(express.json());
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({ extended: false }))
 
-//create your endpoints/route handlers
+//set view engine as EJS
+app.set('view engine', 'ejs')
+
+//Render the home page
 app.get("/", (req, res) => {
-  res.send("Welcome to our schedule website");
-});
+  res.render("pages/index")
+})
+
+//set public folder as static 
+// app.use(express.static('public'))
 
 //users data routes
 app.use("/", require("./routes/api/users"))
