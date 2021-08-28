@@ -2,7 +2,6 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
-// const bootstrap = require('bootstrap')
 
 //Body Parser Middleware
 app.use(express.json());

@@ -11,14 +11,12 @@
         crossorigin="anonymous"></script>
 </head>
 <body>
-
-    <%- include("../partials/header") %> 
-    <main>
-        <div class="container-fluid text-center">
-            <h2 class="p-3">Welcome to schedule website!</h2>
-            <p>Please use navigation bar to get more Information!</p>  
-        </div>
-        
-    </main>
+    <%- include("../partials/header") %>
+    <div class="alert alert-danger fs-1 text-center" role="alert">
+        <p class="fs-1 text-center">
+            <%= msg %>
+        </p>
+        <a class="btn btn-dark" href="/new-schedule">Add Schedule</a>
+    </div>
 </body>
 </html>

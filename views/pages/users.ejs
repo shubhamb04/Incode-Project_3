@@ -4,40 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
 </head>
 <body>
     <%- include("../partials/header") %>
     <main>
-        <div class="container">
-            <table class="table">
-                <tr>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Email ID</th>
-                    <th scope="col">Password</th>
-                    <th>Schedules</th>
-                </tr>
-                <% allUsers.forEach((user, index)=> { %>
-                    <tr>    
-                        <td>
-                            <a href="/users/<%= index %> "><%= user.firstname %></a>
-                        </td>
-                        <td>
-                            <%= user.lastname %>
-                        </td>
-                        <td>
-                            <%= user.email %>
-                        </td>
-                        <td>
-                            <%= user.password %>
-                        </td>
-                        <td>
-                            <a href="/users/<%= index %>/Schedules ">View Schedules</a>
-                        </td>
+        <h3 class="text-center mt-4 mb-4">All Users Information</h3>
+            <table class="table table-primary">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Email ID</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Schedules</th>
                     </tr>
+                </thead>
+                
+                <% allUsers.forEach((user, index)=> { %>
+                    <tbody>
+                        <tr>
+                            <th scope="row">
+                                <%= index %>
+                            </th>
+                            <td>
+                                <a class="text-decoration-none text-primary" href="/users/<%= index %> ">
+                                    <%= user.firstname %>
+                                </a>
+                            </td>
+                            <td>
+                                <%= user.lastname %>
+                            </td>
+                            <td>
+                                <%= user.email %>
+                            </td>
+                            <td>
+                                <%= user.password %>
+                            </td>
+                            <td>
+                                <a class="text-decoration-none btn btn-primary" href="/users/<%= index %>/Schedules ">View Schedules</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    
                     <% }) %>
             </table>
-        </div>
     </main>
 </body>
 </html>
