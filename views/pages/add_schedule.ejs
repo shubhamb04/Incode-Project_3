@@ -22,23 +22,24 @@
             </div>
             <div class="form-group mb-3">
                 <label for="day" class="form-label">Day</label>
-                <select type="text" name="day" class="form-control form-select" required>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
+                <select type="text" name="day" class="form-control form-select text-uppercase" required>
+                    <option value="">Select a day</option>
+                    <option value="1">mon</option>
+                    <option value="2">tue</option>
+                    <option value="3">wed</option>
+                    <option value="4">thur</option>
+                    <option value="5">fri</option>
+                    <option value="6">sat</option>
+                    <option value="7">sun</option>
                 </select>
             </div>
             <div class="form-group mb-3">
                 <label for="start_at" class="form-label">Start Time</label>
-                <input type="text" name="start_at" class="form-control" required>
+                <input type="time" name="start_at" class="form-control" required>
             </div>
             <div class="form-group mb-3">
                 <label for="end_at" class="form-label">End Time</label>
-                <input type="text" name="end_at" class="form-control" required>
+                <input type="time" name="end_at" class="form-control" required>
             </div>
             <input type="submit" value="Add Schedule" class="btn btn-primary">
         </form>

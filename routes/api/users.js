@@ -106,13 +106,6 @@ router.post("/schedules", (req, res) => {
     return res.render("pages/error", { msg: "Please fill all the details!" });
   }
 
-  data.users.forEach((user, index) => {
-    if (index != newSchedule.user_id) {
-      return res.render("pages/error", {
-        msg: "User with given ID does not exist!",
-      });
-    } 
-  });
   data.schedules.push(newSchedule);
 
   res.redirect("/schedules");
