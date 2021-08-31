@@ -33,7 +33,7 @@
                                 <%= user.id %>
                             </th>
                             <td>
-                                <a class="text-decoration-none text-primary" href="/users/<%= index %> ">
+                                <a class="text-decoration-none text-primary" href="/users/<%= user.id %> ">
                                     <%= user.firstname %>
                                 </a>
                             </td>
@@ -47,7 +47,7 @@
                                 <%= user.password %>
                             </td>
                             <td>
-                                <a class="text-decoration-none btn btn-primary" href="/users/<%= index %>/Schedules ">View Schedules</a>
+                                <a class="text-decoration-none btn btn-primary" href="/users/<%= user.id %>/Schedules ">View Schedules</a>
                             </td>
                         </tr>
                     </tbody>

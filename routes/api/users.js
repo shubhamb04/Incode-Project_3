@@ -6,23 +6,29 @@ const db = require("../../db/database");
 
 //gets all users
 router.get("/users", async (req, res) => {
-  const result = await db.any("SELECT * FROM users;");
-  // console.log(result);
-  res.render("pages/users", {
-    allUsers: result
-  });
-  // res.status(200).json({
-  //   status: "success",
-  //   data: {
-  //     users: result
-  //   }
-  // })
+  try {
+    const result = await db.query("SELECT * FROM users;");
+    res.render("pages/users", {
+      allUsers: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 //get individual users
-router.get("/users/:id", (req, res) => {
+router.get("/users/:id", async (req, res) => {
   const userId = Number(req.params.id);
-  const found = data.users.some((user, index) => index === userId);
+  try {
+    const found = await db.query("SELECT * FROM users WHERE id = $1", [userId]);
+    res.render("pages/given_user", {
+      givenUser: found,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+
+  // const found = data.users.some((user, index) => index === userId);
 
   if (found) {
     res.render("pages/given_user", {
@@ -37,35 +43,32 @@ router.get("/users/:id", (req, res) => {
 });
 
 //get schedules of individual users
-router.get("/users/:id/schedules", (req, res) => {
-  const addUserLink = "/new-user";
-  const userId = Number(req.params.id);
-  const foundUser = data.users.some((user, index) => index === userId);
-  const foundSchedule = data.schedules.some((sch) => sch.user_id === userId);
+router.get("/users/:id/schedules", async (req, res) => {
+  try {
+    const userId = Number(req.params.id);
 
-  if (foundUser) {
-    if (foundSchedule) {
-      res.render("pages/given_schedule", {
-        givenSchedule: data.schedules.filter((sch) => sch.user_id === userId),
-      });
-    } else {
-      res.render("pages/error", {
-        msg: `No schedule exist with the id of ${req.params.id}`,
-      });
-    }
-  } else {
-    res.render("pages/error", {
-      msg: `No user exist with the id of ${req.params.id}`,
-      addUserLink,
+    const foundSchedule = await db.query(
+      "SELECT * FROM schedules WHERE user_id = $1",
+      [userId]
+    );
+    res.render("pages/given_schedule", {
+      givenSchedule: foundSchedule,
     });
+  } catch (error) {
+    console.log(error);
   }
 });
 
 //get all schedules
-router.get("/schedules", (req, res) => {
-  res.render("pages/schedules", {
-    allSchedules: data.schedules,
-  });
+router.get("/schedules", async (req, res) => {
+  try {
+    const result = await db.query("SELECT * FROM schedules");
+    res.render("pages/schedules", {
+      allSchedules: result,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 //route to add new user
@@ -75,21 +78,36 @@ router.get("/new-user", (req, res) => {
 
 //Add new user
 router.post("/users", async (req, res) => {
+  try {
+    const { firstname, lastname, email, password } = req.body;
+    const hash = await bcrypt.hash(password, 10);
+    if (!firstname || !lastname || !email || !password) {
+      return res.status(400).json({ msg: "Please fill all the detai ls" });
+    }
+
+    const result = await db.query(
+      "INSERT INTO users (firstname, lastname, email, password) VALUES ($1, $2, $3, $4)",
+      [firstname, lastname, email, hash]
+    );
+
+    res.redirect("/users");
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//update user
+router.put("/users", async (req, res) => {
   const { firstname, lastname, email, password } = req.body;
   const hash = await bcrypt.hash(password, 10);
   if (!firstname || !lastname || !email || !password) {
-    return res.status(400).json({ msg: "Please fill all the details" });
+    return res.status(400).json({ msg: "Please fill all the detai ls" });
   }
 
-  data.users.push({
-    firstname: firstname,
-    lastname: lastname,
-    email: email,
-    password: hash,
-  });
-
-  // res.json(data.users[data.users.length - 1]);
-  res.redirect("/users");
+  const result = await db.query(
+    "UPDATE users SET firstname = $1, lastname = $2, email = $3, password = $4",
+    [firstname, lastname, email, hash]
+  );
 });
 
 //route to add schedule
@@ -98,26 +116,21 @@ router.get("/new-schedule", (req, res) => {
 });
 
 //Add new schedule
-router.post("/schedules", (req, res) => {
-  const newSchedule = {
-    user_id: req.body.user_id,
-    day: req.body.day,
-    start_at: req.body.start_at,
-    end_at: req.body.end_at,
-  };
-
-  if (
-    !newSchedule.user_id ||
-    !newSchedule.day ||
-    !newSchedule.start_at ||
-    !newSchedule.end_at
-  ) {
+router.post("/schedules", async (req, res) => {
+  try {
+    const { user_id, day, start_at, end_at } = req.body;
+  if (!user_id || !day || !start_at || !end_at) {
     return res.render("pages/error", { msg: "Please fill all the details!" });
   }
-
-  data.schedules.push(newSchedule);
-
+  
+  const result = await db.query("INSERT INTO schedules (user_id, day, start_at, end_at) VALUES($1, $2, $3, $4)",
+    [user_id, day, start_at, end_at]);
+        
   res.redirect("/schedules");
+  } catch (error) {
+    console.log(error);
+  }
+  
 });
 
 module.exports = router;

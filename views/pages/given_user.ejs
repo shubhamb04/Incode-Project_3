@@ -29,10 +29,10 @@
                 <tbody>
                     <tr>
                         <th scope="row">
-                            <%= userId %>
+                            <%= user.id %>
                         </th>
                         <td>
-                            <a class="text-decoration-none" href="/users/<%= userId %> ">
+                            <a class="text-decoration-none" href="/users/<%= user.id %> ">
                                 <%= user.firstname %>
                             </a>
                         </td>
@@ -46,7 +46,7 @@
                             <%= user.password %>
                         </td>
                         <td>
-                            <a class="btn btn-primary" href="/users/<%= userId %>/Schedules ">View</a>
+                            <a class="btn btn-primary" href="/users/<%= user.id %>/Schedules ">View</a>
                         </td>
                     </tr>
                 </tbody>
