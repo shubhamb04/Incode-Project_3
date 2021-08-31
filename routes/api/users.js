@@ -2,12 +2,21 @@ const express = require("express");
 const router = express.Router();
 const data = require("../../data");
 const bcrypt = require("bcrypt");
+const db = require("../../db/database");
 
 //gets all users
-router.get("/users", (req, res) => {
+router.get("/users", async (req, res) => {
+  const result = await db.any("SELECT * FROM users;");
+  // console.log(result);
   res.render("pages/users", {
-    allUsers: data.users,
+    allUsers: result
   });
+  // res.status(200).json({
+  //   status: "success",
+  //   data: {
+  //     users: result
+  //   }
+  // })
 });
 
 //get individual users

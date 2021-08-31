@@ -1,3 +1,7 @@
-DROP DATABASE IF EXISTS test_posts;
+-- for help \?
 
-CREATE DATABASE test_posts;
+-- list database \l
+
+-- DROP DATABASE IF EXISTS test_posts;
+
+CREATE DATABASE schedule;
