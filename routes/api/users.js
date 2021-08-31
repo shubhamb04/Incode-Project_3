@@ -122,11 +122,14 @@ router.post("/schedules", async (req, res) => {
   if (!user_id || !day || !start_at || !end_at) {
     return res.render("pages/error", { msg: "Please fill all the details!" });
   }
-  
-  const result = await db.query("INSERT INTO schedules (user_id, day, start_at, end_at) VALUES($1, $2, $3, $4)",
+    // const userID = await db.query("SELECT id from users WHERE id = $1", [user_id])
+
+    const result = await db.query("INSERT INTO schedules (user_id, day, start_at, end_at) VALUES($1, $2, $3, $4)",
     [user_id, day, start_at, end_at]);
         
-  res.redirect("/schedules");
+    res.redirect("/schedules");
+    
+  
   } catch (error) {
     console.log(error);
   }
