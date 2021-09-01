@@ -1,7 +1,6 @@
-# Project 3
+# Mr.Coffee Schedule Management App
 
 - This project is divided into 3 parts for the simplicity 🙂!
-- Developed a schedule website to view and add users and schedules.
 - Stack used: Javascript, nodeJS, ExpressJS, EJS, BootStrap.
 
 ### Step 1: Setup
