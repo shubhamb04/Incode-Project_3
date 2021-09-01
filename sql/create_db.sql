@@ -4,4 +4,4 @@
 
 -- DROP DATABASE IF EXISTS test_posts;
 
-CREATE DATABASE schedule;
+CREATE DATABASE schedules;
