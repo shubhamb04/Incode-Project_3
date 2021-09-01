@@ -27,19 +27,6 @@ router.get("/users/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-
-  // const found = data.users.some((user, index) => index === userId);
-
-  if (found) {
-    res.render("pages/given_user", {
-      givenUser: data.users.filter((user, index) => index === userId),
-      userId,
-    });
-  } else {
-    res.render("pages/error", {
-      msg: `No user found with the id of ${req.params.id}`,
-    });
-  }
 });
 
 //get schedules of individual users
