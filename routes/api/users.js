@@ -2,6 +2,11 @@ const express = require("express");
 const router = express.Router();
 const data = require("../../data");
 const bcrypt = require("bcrypt");
+const {
+  check,
+  expressValidator,
+  validationResult,
+} = require("express-validator");
 
 //gets all users
 router.get("/users", (req, res) => {
@@ -65,23 +70,45 @@ router.get("/new-user", (req, res) => {
 });
 
 //Add new user
-router.post("/users", async (req, res) => {
-  const { firstname, lastname, email, password } = req.body;
-  const hash = await bcrypt.hash(password, 10);
-  if (!firstname || !lastname || !email || !password) {
-    return res.status(400).json({ msg: "Please fill all the details" });
+router.post(
+  "/users",
+  [
+    check("firstname", "First Name must be 3 or more characters!")
+      .exists()
+      .isLength({ min: 3 }),
+    check("lastname", "Last Name must be 3 or more characters!")
+      .exists()
+      .isLength({ min: 3 }),
+    check("email", "Please enter valid email address!")
+      .exists()
+      .isEmail()
+      .normalizeEmail(),
+    check("password", "Password must be atleast 8 characters")
+      .exists()
+      .isLength({ min: 8 }),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    const { firstname, lastname, email, password } = req.body;
+    const hash = await bcrypt.hash(password, 10);
+
+    if (!errors.isEmpty()) {
+      const errorMsgs = errors.array();
+      res.render("pages/add_user", {
+        errorMsgs,
+      });
+    }
+
+    data.users.push({
+      firstname: firstname,
+      lastname: lastname,
+      email: email,
+      password: hash,
+    });
+
+    res.redirect("/users");
   }
-
-  data.users.push({
-    firstname: firstname,
-    lastname: lastname,
-    email: email,
-    password: hash,
-  });
-
-  // res.json(data.users[data.users.length - 1]);
-  res.redirect("/users");
-});
+);
 
 //route to add schedule
 router.get("/new-schedule", (req, res) => {
@@ -89,26 +116,34 @@ router.get("/new-schedule", (req, res) => {
 });
 
 //Add new schedule
-router.post("/schedules", (req, res) => {
-  const newSchedule = {
-    user_id: req.body.user_id,
-    day: req.body.day,
-    start_at: req.body.start_at,
-    end_at: req.body.end_at,
-  };
+router.post(
+  "/schedules",
+  [
+    check("user_id", "Please enter valid ID!").notEmpty(),
+    check("day", "Please select the day!").notEmpty(),
+    check("start_at", "Please enter valid start time!").notEmpty(),
+    check("end_at", "Please enter valid end time!").notEmpty(),
+  ],
 
-  if (
-    !newSchedule.user_id ||
-    !newSchedule.day ||
-    !newSchedule.start_at ||
-    !newSchedule.end_at
-  ) {
-    return res.render("pages/error", { msg: "Please fill all the details!" });
+  (req, res) => {
+    const errors = validationResult(req);
+    const newSchedule = {
+      user_id: req.body.user_id,
+      day: req.body.day,
+      start_at: req.body.start_at,
+      end_at: req.body.end_at,
+    };
+
+    if (!errors.isEmpty()) {
+      // return res.status(404).json(errors.array())
+      const errorMsgs = errors.array();
+      res.render("pages/add_schedule", { errorMsgs });
+    }
+
+    data.schedules.push(newSchedule);
+
+    res.redirect("/schedules");
   }
-
-  data.schedules.push(newSchedule);
-
-  res.redirect("/schedules");
-});
+);
 
 module.exports = router;

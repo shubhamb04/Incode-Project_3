@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;
 //Body Parser Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }))
+// app.use(expressValidator())
 
 //set view engine as EJS
 app.set('view engine', 'ejs')
