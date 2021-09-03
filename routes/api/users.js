@@ -11,26 +11,9 @@ const {
 //get all schedules
 router.get("/schedules", async (req, res) => {
   try {
-    const result = await db.query("SELECT * FROM schedules");
+    const result = await db.any("SELECT * FROM schedules");
     res.render("pages/schedules", {
       allSchedules: result,
-    });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-//get schedules of individual users
-router.get("/users/:id/schedules", async (req, res) => {
-  try {
-    const userId = Number(req.params.id);
-
-    const foundSchedule = await db.query(
-      "SELECT * FROM schedules WHERE user_id = $1",
-      [userId]
-    );
-    res.render("pages/given_schedule", {
-      givenSchedule: foundSchedule,
     });
   } catch (error) {
     console.log(error);
@@ -63,7 +46,7 @@ router.post(
         res.render("pages/add_schedule", { errMsgs });
       }
 
-      const result = await db.query(
+      const result = await db.none(
         "INSERT INTO schedules (username, day, start_at, end_at) VALUES($1, $2, $3, $4)",
         [username, day, start_at, end_at]
       );
