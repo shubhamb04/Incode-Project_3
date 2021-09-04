@@ -11,7 +11,9 @@ const {
 //get all schedules
 router.get("/schedules", async (req, res) => {
   try {
-    const result = await db.any("SELECT * FROM schedules");
+    const result = await db.any(
+      "SELECT user_id, username, day, to_char(start_at, 'HH24:MI') AS start_at, to_char(end_at, 'HH24:MI') AS end_at FROM schedules"
+    );
     res.render("pages/schedules", {
       allSchedules: result,
     });
