@@ -50,7 +50,7 @@ router.post(
 
       const result = await db.none(
         "INSERT INTO schedules (username, day, start_at, end_at) VALUES($1, $2, $3, $4)",
-        [username, day, start_at, end_at]
+        [username, Number(day), start_at, end_at]
       );
 
       res.redirect("/schedules");
