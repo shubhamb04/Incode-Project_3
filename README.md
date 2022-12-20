@@ -13,6 +13,7 @@
 
 ## Step 2: Implementation
 
-- I developed the applications using PostgreSQL as the back-end database management system.
-- Used express which is node.js web application framework.
-- EJS template engine to design HTML pages.
+- Developed an admin page of the applications.
+- UI has been implemented using EJS template engine.
+- Backend logic is written in node.js
+- To store user information and schedule details, PostreSQL has been used.
